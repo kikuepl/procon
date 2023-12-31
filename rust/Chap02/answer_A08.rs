@@ -1,31 +1,25 @@
 use proconio::input;
 use std::f64::consts::PI;
-use std::process::exit;
 use std::cmp::max;
 use std::cmp::min;
 
 fn main() {
     input! {
-        h: usize.
+        h: usize,
         w: usize,
-        n: usize,
-        abcd: [(usize, usize, usize, usize); n],
+        x: [[i32; w]; h],
+        q: usize,
+        queries: [(usize, usize, usize, usize); q]
     }
-    let mut Z = vec![vec![0; w+2]; h+2];
-    for abcdi in abcd {
-        let (ai, bi, ci, di) = abcdi;
-        Z[ai][bi]+=1;
-        Z[ci][di]+=1;
-        Z[ai][di+1]-=1;
-        Z[ci+1][bi]-=1;
-    }
-    let mut S = vec![vec![0; w+2]; h+2];
-    for i in 0..=h {
-        for j in 0..=w {
-            S[i+1][j+1]=Z[i][j]+S[i+1][j]+S[i][j+1]-S[i][j];
+    let mut S = vec![vec![0; w+1]; h+1];
+    for i in 0..h {
+        for j in 0..w {
+            S[i+1][j+1] = x[i][j] + S[i+1][j] + S[i][j+1] - S[i][j];
         }
     }
-    for i in &S{
-        println!("{}", &i)
+    for query in queries {
+        let (ai, bi, ci, di) = query;
+        let ans = S[ci][di] + S[ai-1][bi-1] - S[ai-1][di] - S[ci][bi-1];
+        println!("{}", ans);
     }
 }
