@@ -6,21 +6,26 @@ use std::cmp::min;
 
 fn main() {
     input! {
-        h: usize,
+        h: usize.
         w: usize,
-        x: [[i32; w]; h],
-        q: usize,
-        queries: [(usize, usize, usize, usize); q]
+        n: usize,
+        abcd: [(usize, usize, usize, usize); n],
     }
-    let mut S = vec![vec![0; w+1]; h+1];
-    for i in 0..h {
-        for j in 0..w {
-            S[i+1][j+1] = x[i][j] + S[i+1][j] + S[i][j+1] - S[i][j];
+    let mut Z = vec![vec![0; w+2]; h+2];
+    for abcdi in abcd {
+        let (ai, bi, ci, di) = abcdi;
+        Z[ai][bi]+=1;
+        Z[ci][di]+=1;
+        Z[ai][di+1]-=1;
+        Z[ci+1][bi]-=1;
+    }
+    let mut S = vec![vec![0; w+2]; h+2];
+    for i in 0..=h {
+        for j in 0..=w {
+            S[i+1][j+1]=Z[i][j]+S[i+1][j]+S[i][j+1]-S[i][j];
         }
     }
-    for query in queries {
-        let (ai, bi, ci, di) = query;
-        let ans = S[ci][di] + S[ai-1][bi-1] - S[ai-1][di] - S[ci][bi-1];
-        println!("{}", ans);
+    for i in &S{
+        println!("{}", &i)
     }
 }
