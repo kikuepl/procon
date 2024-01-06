@@ -18,12 +18,26 @@ fn 二分探索1(v: &Vec<usize>, x: &usize) -> Option<usize> {
 }
 //インデックスを特定する
 //こっちの方が使いやすいかも
-fn 二分探索2(v: &Vec<usize>, target: &usize) -> usize {
+fn bisect_right(v: &Vec<usize>, target: &usize) -> usize {
     let mut left = 0;
     let mut right = v.len();
     while left < right {
         let mid = left + (right - left ) / 2;
         if v[mid] <= *target {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    left
+}
+
+fn bisect_left(v: &Vec<usize>, target: &usize) -> usize {
+    let mut left = 0;
+    let mut right = v.len();
+    while left < right {
+        let mid = left + (right - left ) / 2;
+        if v[mid] < *target {
             left = mid + 1;
         } else {
             right = mid;
