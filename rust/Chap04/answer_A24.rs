@@ -7,7 +7,6 @@ use std::cmp::min;
 use std::sync::PoisonError;
 
 fn main() {
-    let inf = 1000000007;
     input! {
         n: usize,
         a:[usize; n]
@@ -16,7 +15,7 @@ fn main() {
     let mut dp = vec![0; n];
     let mut len = 0;
     for i in 0..n {
-      let pos = 二分探索2(&ll, &a[i]);
+      let pos = bisect_left(&ll, &a[i]);
       dp[i]=pos;
       if pos >= len {
         ll.push(a[i]);
